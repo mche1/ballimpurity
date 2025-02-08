@@ -51,7 +51,7 @@ regLeaf <- function(target, method = 'BallImpurity') {
       # n <- length(target); k <- nrow(target[[1]]); m <- ncol(target[[1]])
       # tmp <- array(as.numeric(unlist(target)), dim=c(k, m, n))
       # return(apply(simplify2array(tmp), 1:2, median))
-    }
+    } 
     
   } else {
     if (sum(class(target) == 'matrix') >= 1) {return(colMeans(target))}

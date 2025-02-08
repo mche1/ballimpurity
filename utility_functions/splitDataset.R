@@ -1,10 +1,11 @@
 splitDataset <- function(dataset, ops1, ops2) {
-  # 分割数据集，得到成左子树跟右子树对应的数据集
+  # split dataset into left and right child nodes
   # input: 
-  #   dataset包含了X跟Y
-  #   当X为欧氏数据时，ops1对应选择的特征X[, ops1]，以及切分X的值ops2
-  #   当X为形状数据时，ops1对应指定某个特征变量x的两个中心点c(c1, c2)，ops2为该特征变量对应的距离矩阵D
-  # output: 左子树与右子树对应的数据集
+  #   dataset contains covariates X and outcome Y
+  #   When X is Euclidean，ops1 corresponds to the index of the feature to be used for split (X[, ops1]).
+  #   ops2 is the feature value
+  #  
+  # output: left and right child nodes info
   leftSet <- list(); rightSet <- list()
   if (sum(class(dataset$X) == 'matrix') >= 1) {
     feat <- ops1; val <- ops2
@@ -33,15 +34,9 @@ splitDataset <- function(dataset, ops1, ops2) {
     if (length(dim(leftInd)) == 1) {leftSet$Y <- array(leftSet$Y, c(dim(dataset$Y)[1], dim(dataset$Y)[2], 1))}
     if (length(dim(rightInd)) == 1) {rightSet$Y <- array(rightSet$Y, c(dim(dataset$Y)[1], dim(dataset$Y)[2], 1))}
   } else if (class(dataset$Y) == 'list') {
-    # ly=NULL
-    # ry=NULL
-    # for(i in 1:length(leftInd)){ly=list(ly,dataset$Y[[leftInd[i]]])}
-    # for(i in 1:length(rightInd)){ry=list(ry,dataset$Y[[rightInd[i]]])}
-    # leftSet$Y<-ly
-    # rightSet$Y<-ry
     leftSet$Y=dataset[[2]][leftInd]
     rightSet$Y=dataset[[2]][rightInd]
-        #leftSet$Y <-dataset$Y[[leftInd]]; rightSet$Y <-dataset$Y[[rightInd]]
+       
   } 
   return(list(leftSet=leftSet, rightSet=rightSet, leftInd=leftInd, rightInd=rightInd))
   
